@@ -1,13 +1,4 @@
-# Anti-testportal
-
-Minimalistic Chrome extension - bypass for blur check on testportal.pl(net).
-
-🈹🐀💥 Changing pages will not display a warning about leaving the page.
-
-[![forthebadge](https://forthebadge.com/images/badges/made-with-typescript.svg)](https://forthebadge.com)
-
-
-[<img width="250" src="https://i.imgur.com/ZeD4O9a.png" alt="anti-testportal">](https://i.imgur.com/ZeD4O9a.png)
+# ATP
 
 ## Usage
 
