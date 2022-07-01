@@ -1,0 +1,127 @@
+#!/usr/bin/env perl 
+# shebang -> which interpreter
+use strict; #use ~ import, 'strict' 
+use warnings;
+# warnings used Pragma - specific module, control over some func of compile time or run time
+
+use HTML::Parser;
+use Data::Dumper;
+use HTML::Entities;
+
+my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst)=localtime(time);
+my $day=sprintf("%04d-%02d-%02d",$year+1900,$mon+1,$mday);
+
+my $app=$ARGV[0]; #input from terminal
+if (! defined($app) ) 
+{
+  $app="hdfs";
+}
+if (( $app ne "hdfs" ) && ( $app ne "elastics" ))
+{
+  die "FAILED: arg1 should be either hdfs or elastics";
+}
+#die func -> stop the script, display a message to the end user
+
+my $submit=$ARGV[1];
+if (! defined($submit)) 
+{
+  $submit='Y';
+}
+ # my ($app, $submit) = @ARGV 
+print "Today: $day\n";
+# print Dumper $day;
+open(SCR,"> cmd.bat"); # '>' write
+sub get_comment()     # sub ~ def
+{
+  my $script=shift;   # return first of Argv, shift to left 1
+  my $relname="$app/$script";
+  my $rownum=1;
+  my $name=$script;
+  my $ticket="";
+  $name=~s:.*/::g;
+  my $comment="";
+  my $fullcomment="";
+  my $version="";
+
+  open(SCRIPT,"< $relname"); # '<' read
+  while(<SCRIPT>)
+  {
+
+    if ( /$day/ ) #match
+    {  
+      if ( /Header/ )
+      {
+        my $header=$_; #line in SCRIPT
+        $header=~s/.*version//;  #replace before 'version' = '' 
+        ($version,$day,$hour)=split ' ',$header; #split $header into ...
+        print "HEADER:$version $script\n";  
+      }
+      else
+      {
+        $fullcomment=$_;
+        $comment=$fullcomment;
+        $comment=~s/^.* BI/BI/; #replace begin to BI -> BI
+        #print $comment;
+        $ticket=$comment;
+        $ticket=~s/:.*//; #remove from :
+        $ticket=~s/ .*//; #remove from ' '
+        #print "TICKET:$ticket\n";
+        $fullcomment=~s/^# *//; #remove all # and space at beginning 
+        $fullcomment=~s/ +/ /g; #keep only 1 space
+      }
+      #print $_;
+    }
+    
+    $rownum++;
+  }
+  close(SCRIPT); #if not close file...
+  if (( $fullcomment =~ $version )&&( $version )) # if fullcomment include $version and $version is defined
+  {
+    #print "NAME:$name # $fullcomment\n";
+    my $commit_comment="$name # $fullcomment";
+    $commit_comment=~s/"/ /g; #remove "
+
+    chomp($commit_comment); #drop \n at last
+    print SCR "git -C $app add $script\n";
+    print SCR "git -C $app commit -m \"$commit_comment\"\n";
+  }
+  else
+  {
+    print "#FAILED: $script Invalid Comment version:$version/day:$day/fullcomment:$fullcomment\n";
+  }
+}
+system("git -C $app pull");
+system("git -C $app status > $app.log");
+
+open(LOG, "< $app.log");
+while(<LOG>)
+{
+  chomp(); #drop \n at last in ARGV
+  next if (! /^\t/); #continue if match (begin of tab)
+  my $line=$_; #line in script
+  my $change=""; #change = empty
+  if ( /modified:/ ) #match modified:
+  {
+    $change="modified";  
+  }
+  else
+  {
+    $change="added";  
+  }
+  my $script=$line; 
+  $script=~s/modified://g;  # remove ...
+  $script=~s/\t//g; #remove tab
+  $script=~s/ //g; #remove space
+  &get_comment("$script"); #run sub get_comment
+}
+close(LOG);
+
+print SCR "git -C $app push";
+if ( $submit eq "Y" ) #submit = ARGV[1]
+{
+  system("cmd.bat");
+}
+else
+{
+  print "Please type cmd.bat";
+}

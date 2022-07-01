@@ -1,0 +1,60 @@
+CREATE DATABASE IF NOT EXISTS Marketing_funnel_performance;
+DROP TABLE IF EXISTS Marketing_funnel_performance.marketing_kpi_targets;
+CREATE TABLE Marketing_funnel_performance.marketing_kpi_targets (
+  MARKETING_KPI_TARGETS VARCHAR(100),
+  UKI_Q4 VARCHAR(10),
+  DACHIT_Q4 VARCHAR(10),
+  TOTAL_Q4 VARCHAR(10),
+  UKI_FYTARGET VARCHAR(10),
+  DACHIT_FYTARGET VARCHAR(10),
+  TOTAL_FYTARGET VARCHAR(10))
+)
+ROW FORMAT DELIMITED
+STORED AS TEXTFILE;
+INSERT INTO TABLE Marketing_funnel_performance.marketing_kpi_targets
+   VALUES ('Lead_Gen_Mktg_Budget_target', '147968', '109850', '257818', '591871', '397900', '989771'),
+          ('Lead_Gen_Mktg_Spend_QTD', '150587', '57962', '208549', '486340', '271895', '758234'),
+          ('Achievement_mktg', '102%', '53%', '81%', '82%', '68%', '77%'),
+          ('INQ_target', '1434', '489', '1923', '5736', '1956', '7692'),
+          ('INQ_Quarter_to_date_number_of', '1798', '559', '2357', '6475', '2693', '9168'),
+          ('Archievement_INQ', '125%', '114%', '123%', '113%', '138%', '119%'),
+          ('MQL_TARGET', '717', '468', '1185', '2868', '1866', '4734'),
+          ('MQL_QTD', '1618', '433', '2051', '5083', '1983', '7066'),
+          ('ARCHIEVEMENT_MQL', '226%', '93%', '173%', '177%', '106%', '149%'),
+          ('SQL_TARGET', '60', '444', '504', '640', '886', '1526'),
+          ('SQL_QLD', '18', '9', '27', '188', '56', '244'),
+          ('ARCHIEVEMENT_SQL', '30%', '2%', '5%', '29%', '6%', '16%'),
+          ('MARKETING_GENERATED_BOOKINGS_TARGET', '30', '66', '96', '141', '266', '407'),
+          ('MARKETING_GENERATED_BOOKINGS_QLD', '5', '3', '8', '16', '14', '30'),
+          ('ACHIEVEMENT_MARKETING_GENERATED_BOOKING_OF_DEALS', '17%', '5%', '8%', '11%', '5%', '7%'),
+          ('MARKETING_GENERATED_BOOKING_TARGET', NULL, NULL, '0', NULL, NULL, '0'),
+          ('MARKETING_GENERATED_BOOKING_QTD', '0', '6790', '6790', '380873', '37688', '418561'),
+          ('ACHIEVEMENT_MARKETING_GENERATED_BOOKING', NULL, NULL, NULL, NULL, NULL, NULL);
+
+DROP TABLE IF EXISTS Marketing_funnel_performance.Total_booking_target_All_Lead_Source;
+CREATE TABLE Marketing_funnel_performance.Total_booking_target_All_Lead_Source (
+  MARKETING_KPI_TARGETS VARCHAR(50),
+  UKI_Q4 VARCHAR(10),
+  DACHIT_Q4 VARCHAR(10),
+  TOTAL_Q4 VARCHAR(10),
+  UKI_FYTARGET VARCHAR(10),
+  DACHIT_FYTARGET VARCHAR(10),
+  TOTAL_FYTARGET VARCHAR(10))
+ROW FORMAT DELIMITED
+STORED AS TEXTFILE;
+INSERT INTO TABLE Marketing_funnel_performance.Total_booking_target_All_Lead_Source
+VALUES  ('Total_booking_target_All_Lead_Source', '100', '100', '200', '400', '400', '800'),
+        ('INQ_TO_MQL_CONV.RATE_TARGET', '50%', '96%', '62%', '50%', '95%', '62%'),
+        ('INQ_TO_MQL_CONV.RATE_QTD', '90%', '77%', '87%', '79%', '74%', '77%'),
+        ('MQL_TO_SQL_CONV,RATE_TARGET', '8%', '95%', '43%', '22%', '47%', '32%'),
+        ('MQL_TO_SQL_CONV,RATE_QTD', '1%', '2%', '1%', '4%', '3%', '3%'),
+        ('SQL_TO_BOOKINGS_CONV.RATE_TARGET','50%', '15%', '19%', '22%', '30%', '27%'),
+        ('SQL_TO_BOOKINGS_CONV.RATE_QTD', '28%', '33%', '30%', '9%', '25%', '12%'),
+        ('LEAD_GEN_SPEND_PER_INQ-QTD', '83.8%', '103.7%', '88.5%', '75.1', '101.0', '82.7'),
+        ('LEAD_GEN_SPEND_PER_MQL-QTD', '93.1', '133.9', '101.7', '95.7', '137.1', '107.3'),
+        ('LEAD_GEN_SPEND_PER_SQL-QTD', '8365.9', '6440.2', '7724.0', '2,586.9', '4,855.3', '3,107.5'),
+        ('LEAD_GEN_SPEND_PER_BOOKING_UNIT-QTD', '30117.4', '19320.6', '26068.6', '30396.2', '19421.1', '25274.5'),
+        ('LEAD_GEN_SPEND_PER_BOOKING-QTD', '#DIV/0!', '8.5', '30.7', '1.3', '7.2', '1.8');
+-- DESCRIBE Marketing_funnel_performance.Marketing_KPI_Targets;
+-- SELECT * FROM Marketing_funnel_performance.marketing_kpi_targets;
+-- SELECT * FROM Marketing_funnel_performance.total_booking_target_all_lead_source;
